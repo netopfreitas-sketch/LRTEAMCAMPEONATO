@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LR Team · Rei do Personal</title>
+<meta name="theme-color" content="#162A42">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF2F7; --card:#FFFFFF; --ink:#162A42; --muted:#5B6F86; --line:#D5DEE8;
+  --navy:#162A42; --brand:#4CB1DF; --brandInk:#0B1D30;
+  --esq:#E8741E; --dir:#1D8CC2; --ok:#2E8B57; --warn:#B7791F; --field:#F4F7FA;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1829; --card:#162A42; --ink:#E8F0F7; --muted:#93A8BF; --line:#25405E;
+    --esq:#FF9A55; --dir:#4CB1DF; --field:#10223A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1829; --card:#162A42; --ink:#E8F0F7; --muted:#93A8BF; --line:#25405E;
+  --esq:#FF9A55; --dir:#4CB1DF; --field:#10223A; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 60px}
+h1,h2,h3{margin:0;line-height:1.1}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:6px}
+
+.hero{display:grid;grid-template-columns:1.6fr 1fr;background:var(--navy);color:#fff;border-radius:20px;overflow:hidden;min-height:300px;margin-bottom:14px}
+.hero .tx{padding:20px 10px 18px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.hero .lr{font-weight:900;font-stretch:80%;font-size:22px}
+.hero .lr b{color:var(--brand);font-weight:900;margin-left:8px}
+.hero h1{font-size:clamp(22px,6.2vw,40px);font-weight:900;font-stretch:75%;text-transform:uppercase;margin-top:6px}
+.hero .rei{font-size:clamp(17px,4.6vw,24px);font-weight:800;font-stretch:80%;color:var(--brand);text-transform:uppercase}
+.hero .lema{font-size:clamp(14px,3.8vw,18px)}
+.hero .who{margin-top:auto;font-size:13px;color:#A9BAD0;line-height:1.35;overflow-wrap:anywhere}
+.hero .ph{position:relative;min-height:100%}
+.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block}
+.live{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin:0 2px 8px;font-variant-numeric:tabular-nums}
+.live .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--muted);margin-right:7px}
+.live .dot.on{background:var(--ok)} .live .dot.busy{background:var(--brand)} .live .dot.bad{background:var(--warn)}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:16px}
+.bar>i{display:block;height:100%;background:var(--brand);border-radius:6px;transition:width .4s ease}
+
+.race{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line);margin-bottom:18px}
+.race .side{padding:14px 16px 16px}
+.race .side.e{border-top:6px solid var(--esq)}
+.race .side.d{border-top:6px solid var(--dir);text-align:right}
+.race .lbl{font-size:13px;color:var(--muted)}
+.race .nm{font-size:clamp(22px,6vw,32px);font-weight:900;font-stretch:70%;line-height:1.05;margin-top:4px;word-break:break-word}
+.race .side.e .nm{color:var(--esq)} .race .side.d .nm{color:var(--dir)}
+.race .meta{font-size:13px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.race .x{display:flex;align-items:center;justify-content:center;padding:0 4px;font-weight:900;font-stretch:62%;font-size:22px;color:var(--muted)}
+
+.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);padding:5px;border-radius:14px;margin-bottom:18px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.tabs button{flex:1;border:0;background:transparent;padding:10px 6px;border-radius:10px;font-weight:700;cursor:pointer;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--navy);color:#fff}
+
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filters select{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);min-width:0;flex:1 1 180px}
+.chk{display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer;user-select:none}
+.chk input{width:18px;height:18px;accent-color:var(--navy)}
+
+.games{display:grid;gap:12px}
+.game{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.game .gh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.game .gn{font-weight:800;font-stretch:75%;font-size:15px;color:var(--muted)}
+.chip{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--field);color:var(--muted);border:1px solid var(--line)}
+.chip.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);border-color:transparent}
+.chip.warn{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn);border-color:transparent}
+.team{display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:center;padding:6px 0}
+.team+.team{border-top:1px dashed var(--line)}
+.pair{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:16px}
+.pl{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.pl::before{content:"";width:8px;height:8px;border-radius:50%;flex:none}
+.pl.e::before{background:var(--esq)} .pl.d::before{background:var(--dir)}
+.team.win .pair{font-weight:800}
+.tag{font-size:11px;font-weight:800;background:var(--brand);color:var(--brandInk);padding:1px 6px;border-radius:6px}
+.score{width:72px;height:52px;text-align:center;font-size:28px;font-weight:900;font-stretch:70%;border:2px solid var(--line);border-radius:12px;background:var(--field);font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.score::-webkit-outer-spin-button,.score::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.score:focus{border-color:var(--brand);outline:none}
+.score:disabled{opacity:1;background:transparent;border-color:transparent}
+.game .note{font-size:13px;color:var(--warn);margin-top:6px}
+.game .note:empty{display:none}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);background:var(--card);border-radius:16px;border:1px dashed var(--line)}
+
+.sec{margin-bottom:22px}
+.sec h2{font-size:22px;font-weight:900;font-stretch:72%;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec h2 .sw{width:14px;height:14px;border-radius:4px}
+.tbl-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+th,td{padding:10px 6px;text-align:center;white-space:nowrap}
+@media (max-width:480px){th,td{padding:9px 4px}table{font-size:14px}}
+td.n{white-space:normal}
+th{font-size:12px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+td{border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:left}
+td.pos{font-weight:900;font-stretch:70%;font-size:18px;width:40px}
+td.pts{font-weight:900;font-size:17px}
+tr.lead td{background:color-mix(in srgb,var(--brand) 20%,transparent)}
+tr.lead td.n::after{content:"Finalista";display:inline-block;margin-left:6px;font-size:11px;font-weight:800;background:var(--brand);color:var(--brandInk);padding:1px 6px;border-radius:6px}
+tr.lead.prov td.n::after{content:"Na frente"}
+.sorteio{width:54px;padding:6px;border-radius:8px;border:2px solid var(--brand);background:var(--field);text-align:center}
+.hint{font-size:14px;color:var(--muted);margin:8px 2px 0}
+.hint.alert{color:var(--warn);font-weight:600}
+.prof{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.prof .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.prof .nm{font-size:22px;font-weight:900;font-stretch:72%}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;text-align:center}
+.stats b{display:block;font-size:22px;font-weight:900;font-stretch:70%;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.rules{font-size:14px;color:var(--muted);margin:0;padding-left:18px}
+.rules li{margin:4px 0}
+
+.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.final-grid{grid-template-columns:1fr}}
+.fcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;border-top:6px solid var(--line)}
+.fcard.e{border-top-color:var(--esq)} .fcard.d{border-top-color:var(--dir)}
+.fcard .ord{font-size:13px;color:var(--muted)}
+.fcard .fn{font-size:30px;font-weight:900;font-stretch:68%;line-height:1.05;margin:4px 0 12px}
+.fcard.e .fn{color:var(--esq)} .fcard.d .fn{color:var(--dir)}
+.fcard label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.fcard select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--field)}
+.fcard .fs{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.result{margin-top:16px;padding:18px;border-radius:18px;text-align:center;background:var(--card);border:1px solid var(--line)}
+.result .r1{font-size:13px;color:var(--muted)}
+.result .r2{font-size:clamp(24px,6vw,34px);font-weight:900;font-stretch:68%;margin-top:4px}
+.result.champ{background:var(--brand);border-color:var(--brand);color:var(--brandInk)}
+.result.champ .r1{color:#14405C}
+.firstpick{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{border:1px solid var(--line);background:var(--card);padding:9px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.banner{font-size:14px;padding:10px 14px;border-radius:12px;background:var(--field);border:1px solid var(--line);color:var(--muted);margin-bottom:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="tx">
+      <div class="lr">LR<b>TEAM</b></div>
+      <h1>Campeonato do Personal</h1>
+      <div class="rei">Rei do Personal</div>
+      <div class="lema">20 jogos. Uma final. Um campeão.</div>
+      <div class="who">Professor Lucas Ribeiro<br>@lucasribeiro_treinador</div>
+    </div>
+    <div class="ph"><img alt="Professor Lucas Ribeiro segurando a bola de futevôlei" src="foto.jpg"></div>
+  </section>
+  <div id="app"></div>
+</div>
+<script>
+(function(){
+"use strict";
+var PROF="Lucas Ribeiro";
+var ATH=[["Arthur","D"],["Daniel","E"],["Diego","D"],["Fabrício","E"],["Gabriel","D"],["Igor","E"],["Lucas Sales","E"],["Paulo","D"],["Rafa","E"],["Saya","D"]];
+var GAMES=[
+ [["Lucas Ribeiro","Paulo"],["Fabrício","Arthur"]],
+ [["Rafa","Diego"],["Daniel","Gabriel"]],
+ [["Rafa","Lucas Ribeiro"],["Lucas Sales","Gabriel"]],
+ [["Igor","Saya"],["Rafa","Gabriel"]],
+ [["Lucas Sales","Lucas Ribeiro"],["Daniel","Diego"]],
+ [["Igor","Arthur"],["Daniel","Paulo"]],
+ [["Fabrício","Lucas Ribeiro"],["Rafa","Arthur"]],
+ [["Fabrício","Gabriel"],["Daniel","Paulo"]],
+ [["Daniel","Lucas Ribeiro"],["Lucas Sales","Diego"]],
+ [["Fabrício","Saya"],["Lucas Sales","Gabriel"]],
+ [["Igor","Lucas Ribeiro"],["Fabrício","Diego"]],
+ [["Igor","Saya"],["Rafa","Paulo"]],
+ [["Lucas Ribeiro","Saya"],["Fabrício","Paulo"]],
+ [["Igor","Arthur"],["Rafa","Saya"]],
+ [["Lucas Ribeiro","Arthur"],["Daniel","Diego"]],
+ [["Igor","Paulo"],["Lucas Sales","Saya"]],
+ [["Lucas Ribeiro","Gabriel"],["Igor","Diego"]],
+ [["Fabrício","Saya"],["Lucas Sales","Arthur"]],
+ [["Lucas Ribeiro","Diego"],["Daniel","Gabriel"]],
+ [["Rafa","Arthur"],["Lucas Sales","Paulo"]]
+];
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function emptyFinal(){return {first:"",pE:"",pD:"",sE:"",sD:""};}
+function emptyState(){var s=[];for(var i=0;i<20;i++)s.push(["",""]);return {scores:s,sorteio:{},final:emptyFinal()};}
+var st=emptyState();
+var mode="loading"; // live | nodb | loading
+var tab="jogos", filterName="", onlyPending=false, syncState="idle", stale=false, db=null;
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function num(v){if(v===""||v==null)return null;var n=Number(v);return isFinite(n)?n:NaN;}
+function sideName(s){return s==="E"?"Esquerda":"Direita";}
+function fmtS(n){return n>0?"+"+n:String(n);}
+function ro(){return mode!=="live";}
+
+/* ---------- regras ---------- */
+function gameStatus(i){
+  var a=num(st.scores[i][0]), b=num(st.scores[i][1]);
+  if(a===null&&b===null)return {k:"pend",t:"Pendente"};
+  if(a===null||b===null)return {k:"inc",t:"Incompleto"};
+  if(isNaN(a)||isNaN(b)||a<0||b<0||a%1||b%1)return {k:"inv",t:"Placar inválido"};
+  if(a===b)return {k:"emp",t:"Empate"};
+  return {k:"ok",t:"Concluído",w:a>b?0:1,a:a,b:b};
+}
+function doneCount(){var c=0;for(var i=0;i<20;i++)if(gameStatus(i).k==="ok")c++;return c;}
+function statsFor(name){
+  var s={name:name,j:0,v:0,m:0,s:0};
+  GAMES.forEach(function(g,i){
+    var gs=gameStatus(i); if(gs.k!=="ok")return;
+    for(var t=0;t<2;t++){
+      if(g[t].indexOf(name)>-1){
+        s.j++; var mine=t===0?gs.a:gs.b, opp=t===0?gs.b:gs.a;
+        s.m+=mine; s.s+=opp; if(gs.w===t)s.v++;
+      }
+    }
+  });
+  s.saldo=s.m-s.s; return s;
+}
+function sortVal(n){var x=num(st.sorteio[n]);return (x===null||isNaN(x)||x<=0)?null:x;}
+function rankSide(side){
+  var list=ATH.filter(function(a){return a[1]===side;}).map(function(a){return statsFor(a[0]);});
+  list.forEach(function(p){
+    var pos=1, ps=sortVal(p.name);
+    list.forEach(function(q){
+      if(q===p)return;
+      if(q.v>p.v)pos++;
+      else if(q.v===p.v&&q.saldo>p.saldo)pos++;
+      else if(q.v===p.v&&q.saldo===p.saldo&&q.m>p.m)pos++;
+      else if(q.v===p.v&&q.saldo===p.saldo&&q.m===p.m&&ps!==null){var qs=sortVal(q.name);if(qs!==null&&qs<ps)pos++;}
+    });
+    p.pos=pos;
+    p.tied=list.filter(function(q){return q!==p&&q.v===p.v&&q.saldo===p.saldo&&q.m===p.m;}).length>0;
+  });
+  list.sort(function(a,b){return a.pos-b.pos||a.name.localeCompare(b.name,"pt");});
+  return list;
+}
+function leader(side){
+  var r=rankSide(side), tops=r.filter(function(p){return p.pos===1;});
+  return {list:r, top:tops.length===1?tops[0]:null, tops:tops};
+}
+
+/* ---------- render ---------- */
+var SYNC={idle:["on","Ao vivo"],busy:["busy","Salvando"],bad:["bad","Não foi possível salvar. Tente de novo."]};
+function syncView(){
+  if(mode==="nodb")return ["bad","Sem conexão"];
+  if(mode==="loading")return ["","Carregando"];
+  return SYNC[syncState]||SYNC.idle;
+}
+function setSync(s){syncState=s;var v=syncView(),d=document.getElementById("syncDot"),t=document.getElementById("syncTxt");if(d)d.className="dot "+v[0];if(t)t.textContent=v[1];}
+function render(){
+  var done=doneCount(), v=syncView(), h='';
+  h+='<div class="live"><span><i class="dot '+v[0]+'" id="syncDot"></i><span id="syncTxt">'+v[1]+'</span></span><span id="prog">'+done+' de 20 jogos</span></div>';
+  h+='<div class="bar"><i id="progbar" style="width:'+(done/20*100)+'%"></i></div>';
+  h+='<div id="race">'+raceHTML(leader("E"),leader("D"),done)+'</div>';
+  h+='<div class="tabs" role="tablist">'+tabBtn("jogos","Jogos")+tabBtn("tabela","Classificação")+tabBtn("final","Final")+'</div>';
+  if(mode==="nodb")h+='<div class="banner">Não foi possível carregar os placares. Confira a conexão e a configuração do banco de dados. A página tenta de novo sozinha.</div>';
+  h+='<div id="panel">'+panelHTML()+'</div>';
+  document.getElementById("app").innerHTML=h;
+  bind();
+}
+function tabBtn(id,label){return '<button role="tab" data-tab="'+id+'" aria-selected="'+(tab===id)+'">'+label+'</button>';}
+function raceHTML(LE,LD,done){
+  function side(L,s){
+    var nm, meta;
+    if(L.top){nm=esc(L.top.name);meta=L.top.v+(L.top.v===1?" vitória":" vitórias")+", saldo "+fmtS(L.top.saldo);}
+    else{nm=done===0?"A definir":"Empate";meta=done===0?"Ninguém jogou ainda":L.tops.map(function(p){return p.name;}).join(", ");}
+    return '<div class="side '+s.toLowerCase()+'"><div class="lbl">'+(done===20?"Finalista da ":"Líder da ")+sideName(s)+'</div><div class="nm">'+nm+'</div><div class="meta">'+esc(meta)+'</div></div>';
+  }
+  return '<div class="race">'+side(LE,"E")+'<div class="x">x</div>'+side(LD,"D")+'</div>';
+}
+function panelHTML(){return tab==="jogos"?gamesHTML():tab==="tabela"?tableHTML():finalHTML();}
+function pl(name,pos){
+  var tag=name===PROF?' <span class="tag">Coringa</span>':"";
+  return '<span class="pl '+pos+'">'+esc(name)+tag+'</span>';
+}
+function gamesHTML(){
+  var h='<div class="filters"><select id="fname" aria-label="Filtrar por atleta"><option value="">Todos os atletas</option>';
+  ATH.concat([[PROF,""]]).forEach(function(a){h+='<option'+(filterName===a[0]?" selected":"")+'>'+esc(a[0])+'</option>';});
+  h+='</select><label class="chk"><input type="checkbox" id="fpend"'+(onlyPending?" checked":"")+'> Só os que faltam</label></div>';
+  var items='';
+  GAMES.forEach(function(g,i){
+    if(filterName&&g[0].indexOf(filterName)<0&&g[1].indexOf(filterName)<0)return;
+    var gs=gameStatus(i);
+    if(onlyPending&&gs.k==="ok")return;
+    items+='<div class="game" data-g="'+i+'">'+gameInner(g,i,gs)+'</div>';
+  });
+  if(!items)items='<div class="empty">'+(onlyPending?"Todos esses jogos já têm placar.":"Nenhum jogo para esse filtro.")+'</div>';
+  return h+'<div class="games">'+items+'</div>';
+}
+function chipFor(gs){var c=gs.k==="ok"?"ok":(gs.k==="pend"?"":"warn");return '<span class="chip '+c+'">'+gs.t+'</span>';}
+function gameInner(g,i,gs){
+  var h='<div class="gh"><span class="gn">Jogo '+(i+1)+'</span><span class="js-chip">'+chipFor(gs)+'</span></div>';
+  for(var t=0;t<2;t++){
+    var win=gs.k==="ok"&&gs.w===t;
+    h+='<div class="team'+(win?" win":"")+'"><div class="pair">'+pl(g[t][0],"e")+pl(g[t][1],"d")+'</div>'+
+      '<input class="score" type="number" inputmode="numeric" min="0" step="1" data-g="'+i+'" data-t="'+t+'" value="'+esc(st.scores[i][t])+'" aria-label="Pontos da dupla '+(t+1)+' no jogo '+(i+1)+'"'+(ro()?" disabled":"")+'></div>';
+  }
+  return h+'<div class="note js-note">'+noteFor(gs)+'</div>';
+}
+function noteFor(gs){
+  if(gs.k==="emp")return "Placar empatado não conta. Lance o placar final do jogo.";
+  if(gs.k==="inv")return "Use números inteiros, sem valores negativos.";
+  if(gs.k==="inc")return "Falta o placar da outra dupla.";
+  return "";
+}
+function tableHTML(){
+  var done=doneCount(), all=done===20, h='';
+  ["E","D"].forEach(function(s){
+    var L=leader(s), showS=all&&L.list.some(function(p){return p.tied;});
+    h+='<div class="sec"><h2><span class="sw" style="background:var(--'+(s==="E"?"esq":"dir")+')"></span>'+sideName(s)+'</h2>';
+    h+='<div class="tbl-wrap"><table><thead><tr><th>Pos.</th><th class="n">Atleta</th><th>J</th><th>Pts</th><th>Marc.</th><th>Sofr.</th><th>Saldo</th>'+(showS?'<th>Sorteio</th>':'')+'</tr></thead><tbody>';
+    L.list.forEach(function(p){
+      var lead=L.top&&L.top.name===p.name&&done>0;
+      h+='<tr class="'+(lead?"lead"+(all?"":" prov"):"")+'"><td class="pos">'+p.pos+'</td><td class="n">'+esc(p.name)+'</td><td>'+p.j+'</td><td class="pts">'+p.v+'</td><td>'+p.m+'</td><td>'+p.s+'</td><td>'+fmtS(p.saldo)+'</td>';
+      if(showS)h+='<td>'+(p.tied?'<input class="sorteio" type="number" inputmode="numeric" min="1" step="1" data-sort="'+esc(p.name)+'" value="'+esc(st.sorteio[p.name]||"")+'" aria-label="Sorteio de '+esc(p.name)+'"'+(ro()?" disabled":"")+'>':'')+'</td>';
+      h+='</tr>';
+    });
+    h+='</tbody></table></div>';
+    if(all&&!L.top)h+='<p class="hint alert">Empate na liderança da '+sideName(s)+'. Preencha o sorteio dos empatados: 1 tem a maior prioridade.</p>';
+    h+='</div>';
+  });
+  var P=statsFor(PROF);
+  h+='<div class="sec"><h2><span class="sw" style="background:var(--brand)"></span>Professor</h2><div class="prof"><div class="row"><span class="nm">'+PROF+' <span class="tag">Coringa</span></span><span class="hint" style="margin:0">Joga com todos e contra todos. Não entra na classificação nem na final.</span></div>'+
+     '<div class="stats"><div><b>'+P.j+'/10</b><span>Jogos</span></div><div><b>'+P.v+'</b><span>Vitórias</span></div><div><b>'+P.m+'</b><span>Marcados</span></div><div><b>'+P.s+'</b><span>Sofridos</span></div><div><b>'+fmtS(P.saldo)+'</b><span>Saldo</span></div></div></div></div>';
+  h+='<div class="sec"><h2>Regras</h2><ul class="rules">'+
+     '<li>Vitória vale 1 ponto para cada atleta da dupla. Derrota vale 0.</li>'+
+     '<li>Placar empatado não conta para nada.</li>'+
+     '<li>Desempate: pontos, saldo, pontos marcados e sorteio.</li>'+
+     '<li>O melhor da esquerda e o melhor da direita fazem a final.</li>'+
+     '<li>Cada atleta joga 7 partidas. O professor joga 10.</li></ul></div>';
+  return h;
+}
+function finalInfo(){
+  var done=doneCount(), LE=leader("E"), LD=leader("D");
+  var info={done:done, E:LE.top, D:LD.top, ready:done===20&&!!LE.top&&!!LD.top};
+  if(info.ready){
+    var a=LE.top,b=LD.top, first="";
+    if(a.v!==b.v)first=a.v>b.v?"E":"D";
+    else if(a.saldo!==b.saldo)first=a.saldo>b.saldo?"E":"D";
+    else if(a.m!==b.m)first=a.m>b.m?"E":"D";
+    info.autoFirst=first;
+    info.first=first||st.final.first||"";
+    info.poolE=ATH.filter(function(x){return x[1]==="D"&&x[0]!==b.name;}).map(function(x){return x[0];});
+    info.poolD=ATH.filter(function(x){return x[1]==="E"&&x[0]!==a.name;}).map(function(x){return x[0];});
+    info.pE=info.poolE.indexOf(st.final.pE)>-1?st.final.pE:"";
+    info.pD=info.poolD.indexOf(st.final.pD)>-1?st.final.pD:"";
+  }
+  return info;
+}
+function finalHTML(){
+  var f=finalInfo();
+  if(!f.ready){
+    var msg=f.done<20?"A final é montada quando os 20 jogos tiverem placar. Faltam "+(20-f.done)+".":"Há empate na liderança de um dos lados. Resolva o sorteio na aba Classificação.";
+    return '<div class="empty">'+msg+'</div><p class="hint">O melhor da esquerda e o melhor da direita fazem a final. Quem terminar melhor colocado escolhe o parceiro primeiro, sempre do lado oposto.</p>';
+  }
+  var h='';
+  if(!f.autoFirst){
+    h+='<div class="banner">Os dois finalistas terminaram com a mesma campanha. Defina quem escolhe o parceiro primeiro:<div class="firstpick">'+
+       '<button class="btn'+(f.first==="E"?" on":"")+'" data-first="E"'+(ro()?" disabled":"")+'>'+esc(f.E.name)+'</button>'+
+       '<button class="btn'+(f.first==="D"?" on":"")+'" data-first="D"'+(ro()?" disabled":"")+'>'+esc(f.D.name)+'</button></div></div>';
+  }
+  var order=f.first==="D"?["D","E"]:["E","D"];
+  h+='<div class="final-grid">';
+  order.forEach(function(s,idx){
+    var fin=s==="E"?f.E:f.D, pool=s==="E"?f.poolE:f.poolD, cur=s==="E"?f.pE:f.pD;
+    var other=order[0];
+    var waiting=idx===1&&(!f.first||!(other==="E"?f.pE:f.pD));
+    h+='<div class="fcard '+s.toLowerCase()+'"><div class="ord">'+(f.first?(idx===0?"Escolhe primeiro":"Escolhe em segundo"):"Finalista")+', melhor da '+sideName(s)+'</div>';
+    h+='<div class="fn">'+esc(fin.name)+'</div>';
+    h+='<label for="p'+s+'">Parceiro ('+(s==="E"?"direita":"esquerda")+')</label><select id="p'+s+'" data-partner="'+s+'"'+((ro()||waiting||!f.first)?" disabled":"")+'><option value="">'+(waiting?"Aguardando a 1ª escolha":"Escolher parceiro")+'</option>';
+    pool.forEach(function(n){h+='<option'+(cur===n?" selected":"")+'>'+esc(n)+'</option>';});
+    h+='</select>';
+    h+='<div class="fs"><span class="ord">Placar da final</span><input class="score" type="number" inputmode="numeric" min="0" step="1" data-fs="'+s+'" value="'+esc(st.final["s"+s])+'" aria-label="Placar da dupla de '+esc(fin.name)+'"'+(ro()?" disabled":"")+'></div>';
+    h+='</div>';
+  });
+  h+='</div><div id="fresult">'+resultHTML(f)+'</div>';
+  h+='<p class="hint">A final define a dupla campeã e não muda os pontos da fase classificatória.</p>';
+  return h;
+}
+function resultHTML(f){
+  if(!f.pE||!f.pD)return '<div class="result"><div class="r1">Resultado</div><div class="r2">Escolham os parceiros</div></div>';
+  var a=num(st.final.sE), b=num(st.final.sD);
+  if(a===null||b===null||isNaN(a)||isNaN(b))return '<div class="result"><div class="r1">'+esc(f.E.name+" e "+f.pE)+' x '+esc(f.D.name+" e "+f.pD)+'</div><div class="r2">Lance o placar da final</div></div>';
+  if(a===b)return '<div class="result"><div class="r1">Resultado</div><div class="r2">Final empatada. Lance o placar final.</div></div>';
+  var w=a>b?(f.E.name+" e "+f.pE):(f.D.name+" e "+f.pD);
+  return '<div class="result champ"><div class="r1">Dupla campeã, '+Math.max(a,b)+' a '+Math.min(a,b)+'</div><div class="r2">'+esc(w)+'</div></div>';
+}
+
+/* ---------- eventos ---------- */
+function bind(){
+  document.querySelectorAll("[data-tab]").forEach(function(b){
+    b.addEventListener("click",function(){tab=b.getAttribute("data-tab");render();});
+  });
+  var fn=document.getElementById("fname");
+  if(fn)fn.addEventListener("change",function(){filterName=fn.value;rerenderPanel();});
+  var fp=document.getElementById("fpend");
+  if(fp)fp.addEventListener("change",function(){onlyPending=fp.checked;rerenderPanel();});
+  document.querySelectorAll("input.score[data-g]").forEach(function(inp){
+    inp.addEventListener("input",function(){
+      var i=+inp.getAttribute("data-g"), t=+inp.getAttribute("data-t");
+      st.scores[i][t]=inp.value.trim();
+      var card=inp.closest(".game"); paintGame(card,i);
+      refreshTop(); changed("g"+i);
+    });
+  });
+  document.querySelectorAll("input[data-sort]").forEach(function(inp){
+    inp.addEventListener("change",function(){
+      var n=inp.getAttribute("data-sort"), v=inp.value.trim();
+      if(v)st.sorteio[n]=v;else delete st.sorteio[n];
+      changed("sorteio"); refreshTop(); rerenderPanel();
+    });
+  });
+  document.querySelectorAll("[data-first]").forEach(function(b){
+    b.addEventListener("click",function(){st.final.first=b.getAttribute("data-first");st.final.pE="";st.final.pD="";changed("final");rerenderPanel();});
+  });
+  document.querySelectorAll("select[data-partner]").forEach(function(sel){
+    sel.addEventListener("change",function(){
+      var s=sel.getAttribute("data-partner"); st.final["p"+s]=sel.value;
+      var f=finalInfo(); if(f.first===s&&!sel.value)st.final["p"+(s==="E"?"D":"E")]="";
+      changed("final"); rerenderPanel();
+    });
+  });
+  document.querySelectorAll("input[data-fs]").forEach(function(inp){
+    inp.addEventListener("input",function(){
+      st.final["s"+inp.getAttribute("data-fs")]=inp.value.trim(); changed("final");
+      var r=document.getElementById("fresult"); if(r)r.innerHTML=resultHTML(finalInfo());
+    });
+  });
+}
+function paintGame(card,i){
+  var gs=gameStatus(i);
+  card.querySelector(".js-chip").innerHTML=chipFor(gs);
+  card.querySelector(".js-note").textContent=noteFor(gs);
+  card.querySelectorAll(".team").forEach(function(el,ti){el.classList.toggle("win",gs.k==="ok"&&gs.w===ti);});
+}
+function rerenderPanel(){var p=document.getElementById("panel");p.innerHTML=panelHTML();bind();}
+function refreshTop(){
+  var done=doneCount();
+  document.getElementById("prog").textContent=done+" de 20 jogos";
+  document.getElementById("progbar").style.width=(done/20*100)+"%";
+  document.getElementById("race").innerHTML=raceHTML(leader("E"),leader("D"),done);
+}
+function typing(){
+  var a=document.activeElement;
+  return !!(a&&a.closest&&a.closest("#app")&&/^(INPUT|SELECT)$/.test(a.tagName));
+}
+function remoteChanged(){
+  if(!document.getElementById("race")){render();return;}
+  if(typing()){
+    stale=true; refreshTop();
+    document.querySelectorAll("input.score[data-g]").forEach(function(inp){
+      if(inp===document.activeElement)return;
+      var i=+inp.getAttribute("data-g"), t=+inp.getAttribute("data-t");
+      if(inp.value!==st.scores[i][t])inp.value=st.scores[i][t];
+      paintGame(inp.closest(".game"),i);
+    });
+    return;
+  }
+  stale=false; render();
+}
+document.addEventListener("focusout",function(){
+  setTimeout(function(){if(stale&&!typing()){stale=false;render();}},80);
+});
+
+/* ---------- dados ---------- */
+var API="/api/state";
+var pend={};
+function isBusy(k){var p=pend[k];return !!(p&&(p.t||p.busy||p.again));}
+function isFresh(k){var p=pend[k];return isBusy(k)||!!(p&&p.doneAt&&Date.now()-p.doneAt<3000);}
+function anyPending(){for(var k in pend)if(isBusy(k))return true;return false;}
+function payloadFor(k){
+  if(k==="sorteio")return clone(st.sorteio);
+  if(k==="final")return clone(st.final);
+  var i=+k.slice(1);
+  return {a:st.scores[i][0],b:st.scores[i][1]};
+}
+function changed(k){
+  if(mode!=="live")return;
+  var p=pend[k]||(pend[k]={t:null,busy:false,again:false,doneAt:0});
+  clearTimeout(p.t); setSync("busy");
+  p.t=setTimeout(function(){p.t=null;flush(k);},450);
+}
+function flush(k){
+  var p=pend[k];
+  if(p.busy){p.again=true;return;}
+  p.busy=true;
+  fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:k,value:payloadFor(k)})})
+  .then(function(r){if(!r.ok)throw new Error("http");})
+  .then(function(){
+    p.busy=false; p.doneAt=Date.now();
+    if(p.again){p.again=false;flush(k);return;}
+    if(!anyPending())setSync("idle");
+  },function(){
+    p.busy=false; p.again=false; setSync("bad");
+    p.t=setTimeout(function(){p.t=null;flush(k);},2500);
+  });
+}
+function applyRemote(data){
+  var before=JSON.stringify(st);
+  for(var i=0;i<20;i++){
+    var k="g"+i; if(isFresh(k))continue;
+    var x=data[k];
+    st.scores[i]=x?[x.a==null?"":String(x.a),x.b==null?"":String(x.b)]:["",""];
+  }
+  if(!isFresh("sorteio"))st.sorteio=(data.sorteio&&typeof data.sorteio==="object")?data.sorteio:{};
+  if(!isFresh("final")){
+    var f=emptyFinal(), y=data.final||{};
+    for(var q in f)if(y[q]!=null)f[q]=String(y[q]);
+    st.final=f;
+  }
+  return JSON.stringify(st)!==before;
+}
+function load(first){
+  fetch(API,{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("http");return r.json();}).then(function(data){
+    var recovered=mode!=="live";
+    mode="live";
+    var ch=applyRemote(data||{});
+    if(first||recovered)render();
+    else if(ch)remoteChanged();
+    if(!anyPending()&&syncState==="bad")setSync("idle");
+  },function(){
+    if(mode==="loading"){mode="nodb";render();}
+  });
+}
+
+/* ---------- início ---------- */
+render();
+load(true);
+setInterval(function(){if(!document.hidden)load(false);},4000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)load(false);});
+})();
+</script>
+</body>
+</html>
